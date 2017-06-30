@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <writeFile.h>
-#include <readFile.h>
+#include <escritaArquivo.h>
+#include <leituraArquivo.h>
 #include <free.h>
-#include <print.h>
-#include <search.h>
+#include <impressao.h>
+#include <busca.h>
 #include <utils.h>
 #include <menu.h>
+#include <insercao.h>
 
 int main()
 {
@@ -17,9 +18,9 @@ int main()
 	int opcao = 0, regNumber = 0, subop = 0, i;
 
     while(TRUE){
-    	printMainMenu();
+    	imprimeMenuPrincipal();
 
-        opcao = readOp();
+        opcao = leOp();
 
 
 	    if(opcao == 6){
@@ -45,7 +46,6 @@ int main()
     		case 3:
     		//Inserir registro
     		break;
-
 
     		case 4:
     		//Estatisticas indices

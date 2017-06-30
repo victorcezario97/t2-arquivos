@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <utils.h>
 
-void printMainMenu(){
+void imprimeMenuincipal(){
 	//Menu do tipo de arquivo a ser manipulado
    		printf ("Escolha a opcao desejada:\n");
         printf ("1 - Ler registros e gerar arquivos de saida\n");
@@ -13,7 +13,7 @@ void printMainMenu(){
         printf ("6 - Sair\n");
 }
 
-int readOp(){
+int leOp(){
 	int opcao;
 
 	do
@@ -24,7 +24,7 @@ int readOp(){
 
             if(opcao > 6 || opcao < 1)
             {
-                printf("Opcao invalida. Digite Novamente(numero de 1 a 6).\n");
+                printf("Opcao invalida. Digite Novamente(numero entre 1 e 6).\n");
             }
 
         }while(opcao > 6 || opcao < 1);
