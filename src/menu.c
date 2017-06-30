@@ -24,7 +24,7 @@ int readOp(){
 
             if(opcao > 6 || opcao < 1)
             {
-                printf("Opcao invalida. Digite Novamente(numero entre 1 a 4).\n");
+                printf("Opcao invalida. Digite Novamente(numero de 1 a 6).\n");
             }
 
         }while(opcao > 6 || opcao < 1);
