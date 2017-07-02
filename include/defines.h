@@ -31,6 +31,7 @@ typedef struct campo{
 //Registro
 typedef struct reg
 {
+	int tamanho;
     int tamanhoDominio;
 	char *dominio;
 	char documento[TAMANHO_FIXO];
@@ -54,12 +55,13 @@ typedef struct ind
 
 typedef struct rem{
 	int tamanho;
-	int rrn; 
+	int rrn;
+	struct rem *prox; 
 } REMOVIDOS;
 
 typedef struct remList{
 	int n;
-	REMOVIDOS *removidos;
+	REMOVIDOS *topo;
 } LISTAREM;
 
 #endif
