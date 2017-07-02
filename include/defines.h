@@ -46,6 +46,20 @@ typedef struct reg
 
 } REGISTRO;
 
+typedef struct ind
+{
+	int ticket;
+    int rnn;
+} INDICE;
 
+typedef struct rem{
+	int tamanho;
+	int rrn; 
+} REMOVIDOS;
+
+typedef struct remList{
+	int n;
+	REMOVIDOS *removidos;
+} LISTAREM;
 
 #endif
