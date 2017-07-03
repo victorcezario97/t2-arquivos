@@ -102,7 +102,7 @@ void criaIndice (FILE *arquivo, int qtd)
     printf("---------------\n");
     printf(" %d: ", qtd);
     printf("\n---------------\n");
-    for (int i=0;i<qtd;i++){
+    for (i=0;i<qtd;i++){
         printf("%d: ", i);
         printf("ticket: %d - ", indices[i].ticket);
         printf("rnn: %d ", indices[i].rnn);
