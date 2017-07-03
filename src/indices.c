@@ -111,7 +111,7 @@ void criaIndice (FILE *arquivo, int qtd)
 	
 	
     // percorre todo o vetor e insere no arquivo de indice
-     for (int i=0;i<qtd;i++){
+     for (i=0;i<qtd;i++){
         t = indices[i].ticket;
         r = indices[i].rnn;
 
