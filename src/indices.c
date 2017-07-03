@@ -3,12 +3,41 @@
 #include <defines.h>
 #include <leituraArquivo.h>
 
+void Quick(INDICE vetor[], int inicio, int fim){
+   
+   int pivo, aux, i, j, meio;
+   
+   i = inicio;
+   j = fim;
+   
+   meio = (int) ((i + j) / 2);
+   pivo = vetor[meio].ticket;
+   
+   do{
+      while (vetor[i].ticket < pivo) i = i + 1;
+      while (vetor[j].ticket > pivo) j = j - 1;
+      
+      if(i <= j){
+         aux = vetor[i].ticket;
+         vetor[i].ticket = vetor[j].ticket;
+         vetor[j].ticket = aux;
+         i = i + 1;
+         j = j - 1;
+      }
+   }while(j > i);
+   
+   if(inicio < j) Quick(vetor, inicio, j);
+   if(i < fim) Quick(vetor, i, fim);   
+
+}
+
 void criaIndice (FILE *arquivo, int qtd)
 {
     FILE *indice1 = fopen("indices/indiceBestFit.bin", "w+");
     FILE *indice2 = fopen("indices/indiceWorstFit.bin", "w+");
     FILE *indice3 = fopen("indices/indiceFirstFit.bin", "w+");
-    INDICE *indices = (INDICE*)malloc(sizeof(INDICE) * (qtd));
+    INDICE indices[qtd];
+    //INDICE *indices = (INDICE*)malloc(sizeof(INDICE) * (qtd));
 	REGISTRO aux;
 	int delim, rnn = 0, n=0, pos = 0, i, k=0, t, r;
 
@@ -34,8 +63,11 @@ void criaIndice (FILE *arquivo, int qtd)
         printf("rrn: %d", rnn);
         printf("\n---------------\n");*/
 
-		// inserir no vetor de maneira ordenada
-		if (n==0){
+	indices[k].ticket = aux.ticket;
+	indices[k].rnn = rnn;  
+
+	// inserir no vetor de maneira ordenada
+	if (n==0){
             indices[n].ticket = aux.ticket;
             indices[n].rnn = rnn;
             n++;
@@ -64,7 +96,20 @@ void criaIndice (FILE *arquivo, int qtd)
         printf("rnn: %d ", indices[n].rnn);
         printf("\n---------------\n");
     }*/
-
+	
+	Quick(indices, 0, qtd);
+	
+    printf("---------------\n");
+    printf(" %d: ", qtd);
+    printf("\n---------------\n");
+    for (int i=0;i<qtd;i++){
+        printf("%d: ", i);
+        printf("ticket: %d - ", indices[i].ticket);
+        printf("rnn: %d ", indices[i].rnn);
+        printf("\n---------------\n");
+    }
+	
+	
     // percorre todo o vetor e insere no arquivo de indice
      for (int i=0;i<qtd;i++){
         t = indices[i].ticket;
