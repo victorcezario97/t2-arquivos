@@ -4,4 +4,4 @@ all:
 run:
 	./t2
 clear:
-	rm saidas/*.bin t2
+	rm saidas/*.bin t2 indices/*.bin
