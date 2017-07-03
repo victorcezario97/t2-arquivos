@@ -8,6 +8,9 @@
 //Retorna se o campo é de tamanho fixo ou nao
 #define fixo(i) (i == 1) || (i == 5) || (i == 6)
 
+#define MAX2(m, n) m > n ? m : n
+#define MAX3(m, n, p) MAX2(m, n) > p ? MAX2(m, n) : p
+
 //Ordem dos campos
 enum{
 	DOMINIO,
@@ -44,7 +47,6 @@ typedef struct reg
 	char *dataHoraCadastro;///Campo fixo, porém como pode haver null no arquivo fica mais fácil verificar como um ponteiro depois....
 	char *dataHoraAtualiza;///idem.
 	int ticket;
-
 } REGISTRO;
 
 typedef struct ind

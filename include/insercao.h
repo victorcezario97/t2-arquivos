@@ -1,6 +1,10 @@
 #ifndef _INSERCAO_H_
 #define _INSERCAO_H_
 
-int inserir(REGISTRO reg, int op);
+#include <defines.h>
+
+int recebeCampo(char **campo, boolean fixo, boolean nulo);
+REGISTRO recebeRegistro();
+int inserir();
 
 #endif
