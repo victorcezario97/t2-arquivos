@@ -9,7 +9,7 @@ void criaIndice (FILE *arquivo, int qtd)
     FILE *indice2 = fopen("indices/indiceWorstFit.bin", "w+");
     FILE *indice3 = fopen("indices/indiceFirstFit.bin", "w+");
     INDICE *indices = (INDICE*)malloc(sizeof(INDICE) * (qtd));
-	REGISTRO aux;
+    REGISTRO aux;
     LISTAIND *lista = (LISTAIND*)malloc(sizeof(LISTAIND));
     INDICE *ind;
 	int delim, rnn = 0, n=0, pos = 0, i, k=0, t, r;
