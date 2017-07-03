@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <defines.h>
+#include <indices.h>
 
 ///-------------------------FUNCOES QUE GERAM OS ARQUIVOS DE SAIDA--------------------------///
 

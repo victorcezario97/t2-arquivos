@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <utils.h>
 
-void imprimeMenuincipal(){
+void imprimeMenuPrincipal(){
 	//Menu do tipo de arquivo a ser manipulado
    		printf ("Escolha a opcao desejada:\n");
         printf ("1 - Ler registros e gerar arquivos de saida\n");

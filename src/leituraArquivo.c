@@ -4,17 +4,47 @@
 #include <string.h>
 #include <escritaArquivo.h>
 #include <free.h>
+#include <indices.h>
 
 //Funcao que le um registro de um arquivo passado
 REGISTRO leRegistro(FILE *arquivo){
 	REGISTRO registro;
 	int tamanho, pos;
 
+	//----------------------------CAMPOS FIXOS-------------------------//
+	fread(registro.documento, sizeof(char), TAMANHO_FIXO, arquivo);
+
+	///6 campo: dataHoraCadastro
+    ///Faz a verificação se o campo não é null.
+    pos = ftell(arquivo);
+    fread(&tamanho, sizeof(int), 1, arquivo);
+	if (tamanho != 0){
+		fseek(arquivo, pos, SEEK_SET);
+		registro.dataHoraCadastro = (char*)malloc(sizeof(char)*TAMANHO_FIXO);
+		fread(registro.dataHoraCadastro, sizeof(char), TAMANHO_FIXO, arquivo);
+	}else registro.dataHoraCadastro = NULL;
+
+	///7 campo: dataHoraAtualiza
+    ///Faz a verificação se o campo não é null.
+    pos = ftell(arquivo);
+	fread(&tamanho, sizeof(int), 1, arquivo);
+	if (tamanho != 0){
+		fseek(arquivo, pos, SEEK_SET);
+		registro.dataHoraAtualiza = (char*)malloc(sizeof(char)*TAMANHO_FIXO);
+		fread(registro.dataHoraAtualiza, sizeof(char), TAMANHO_FIXO, arquivo);
+	}
+	else registro.dataHoraAtualiza = NULL;
+
+	///8 campo: ticket
+	fread(&registro.ticket, sizeof(int), 1, arquivo);
+
+	//--------------------------------------------------------------//
+
+	//-----------------------------CAMPOS VARIAVEIS--------------------------//
+
 	fread(&(registro.tamanhoDominio), sizeof(int), 1, arquivo);//tamanho do 1 campo
 	registro.dominio = (char*)malloc(sizeof(char)*registro.tamanhoDominio);
 	fread(registro.dominio, sizeof(char), registro.tamanhoDominio, arquivo);
-
-	fread(registro.documento, sizeof(char), TAMANHO_FIXO, arquivo);
 
 	fread(&registro.tamanhoNome, sizeof(int), 1, arquivo);///tamanho do 3 campo
 	registro.nome = (char*)malloc(sizeof(char)*registro.tamanhoNome);
@@ -33,29 +63,7 @@ REGISTRO leRegistro(FILE *arquivo){
 		fread(registro.cidade, sizeof(char), registro.tamanhoCidade, arquivo);
 	}else registro.cidade = NULL;
 
-    ///6 campo: dataHoraCadastro
-    ///Faz a verificação se o campo não é null.
-    pos = ftell(arquivo);
-    fread(&tamanho, sizeof(int), 1, arquivo);
-	if (tamanho != 0){
-		fseek(arquivo, pos, SEEK_SET);
-		registro.dataHoraCadastro = (char*)malloc(sizeof(char)*TAMANHO_FIXO);
-		fread(registro.dataHoraCadastro, sizeof(char), TAMANHO_FIXO, arquivo);
-	}else registro.dataHoraCadastro = NULL;
-
-    ///7 campo: dataHoraAtualiza
-    ///Faz a verificação se o campo não é null.
-    pos = ftell(arquivo);
-	fread(&tamanho, sizeof(int), 1, arquivo);
-	if (tamanho != 0){
-		fseek(arquivo, pos, SEEK_SET);
-		registro.dataHoraAtualiza = (char*)malloc(sizeof(char)*TAMANHO_FIXO);
-		fread(registro.dataHoraAtualiza, sizeof(char), TAMANHO_FIXO, arquivo);
-	}
-	else registro.dataHoraAtualiza = NULL;
-
-    ///8 campo: ticket
-	fread(&registro.ticket, sizeof(int), 1, arquivo);
+	//------------------------------------------------------------------------//
 
 	return registro;
 }
@@ -99,10 +107,12 @@ char *leCampoVariavel(FILE *arquivo, int *tamanho)
 ///modo(1): Arquivo com indicador de tamanho de registro.
 ///modo(2): Arquivo com delimitadores entre registros.
 ///modo(3): Arquivo com numero fixo de campos.
-void leEntradaGeraSaida(char *entrada, char *saida, REGISTRO *registro, int modo){
+void leEntradaGeraSaida(char *entrada, REGISTRO *registro){
 	int qtdRegistro = 0;
 	FILE *arquivoEntrada = fopen(entrada, "r");
-	FILE *arquivoSaida = fopen(saida, "wb+");
+	FILE *arquivo1 = fopen("./saidas/saidaBestFit.bin", "wb+");
+	FILE *arquivo2 = fopen("./saidas/saidaWorstFit.bin", "wb+");
+	FILE *arquivo3 = fopen("./saidas/saidaFirstFit.bin", "wb+");
 
 	///---------------LEITURA (POR "REGISTRO)-------------------
 		///Dominio
@@ -181,28 +191,21 @@ void leEntradaGeraSaida(char *entrada, char *saida, REGISTRO *registro, int modo
 
 	///---------------------------------------GRAVAR ARQUIVO DE SAIDA--------------------------------------///
 
-        if(modo == 1) ///modo(1): Arquivo com indicador de tamanho de registro.
-        {
-            gravarArquivoComTamanho(arquivoSaida, registro);
-        }
-
-        if(modo == 2) ///modo(2): Arquivo com delimitadores entre registros.No caso, "sepador" de registro.
-        {
-            gravarArquivoComSeparador(arquivoSaida, registro);
-        }
-
-        if(modo == 3) ///modo(3): Arquivo com numero fixo de campos.
-        {
-        	gravarArquivoComNumeroFixo(arquivoSaida, registro);
-        }
+        gravarArquivoComSeparador(arquivo1, registro);
+        gravarArquivoComSeparador(arquivo2, registro);
+        gravarArquivoComSeparador(arquivo3, registro);
 
 		qtdRegistro++;
 		libera_campos(registro);
 	}
 
+	criaIndice(arquivo1, qtdRegistro);
+
 
 	fclose(arquivoEntrada);
-	fclose(arquivoSaida);
+	fclose(arquivo1);
+	fclose(arquivo2);
+	fclose(arquivo3);
 
-	printf("\nArquivo de saida gerado!\n");
+	printf("\nArquivos de saida gerados!\n");
 }

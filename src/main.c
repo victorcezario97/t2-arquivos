@@ -9,6 +9,7 @@
 #include <utils.h>
 #include <menu.h>
 #include <insercao.h>
+#include <indices.h>
 
 int main()
 {
@@ -40,9 +41,9 @@ int main()
     		//Gera o arquivo de saida
     		leEntradaGeraSaida(ENTRADA, registro);///função que lê o arquivo de entrada e gera o arquivo saida dependendo da decisão do usuário.
     		//Libera a memoria usada
-    		libera_campos(registro);
+    		/*libera_campos(registro);
     		free(registro);
-    		registro = NULL;
+    		registro = NULL;*/
     		break;
 
     		case 2:
@@ -50,18 +51,12 @@ int main()
     		break;
 
     		case 3:
-    		/*fp = fopen("indices/indiceBestFit.bin", "r");
-    		c = fgetc(fp);
-    		printf("%c\n", c);
-    		while(c != EOF){
-    			printf("%c", c);
-    			c = fgetc(fp);
-    		}*/
     		inserir();
     		break;
 
     		case 4:
     		//Estatisticas indices
+    		imprimirIndices();
 			break;
 
 			case 5:
@@ -73,7 +68,6 @@ int main()
 			printf("Opcao Invalida\n");
 			break;
     	}
-    	//fclose(fp);
 
 	}
 
