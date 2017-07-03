@@ -9,9 +9,7 @@ void criaIndice (FILE *arquivo, int qtd)
     FILE *indice2 = fopen("indices/indiceWorstFit.bin", "w+");
     FILE *indice3 = fopen("indices/indiceFirstFit.bin", "w+");
     INDICE *indices = (INDICE*)malloc(sizeof(INDICE) * (qtd));
-    REGISTRO aux;
-    LISTAIND *lista = (LISTAIND*)malloc(sizeof(LISTAIND));
-    INDICE *ind;
+	REGISTRO aux;
 	int delim, rnn = 0, n=0, pos = 0, i, k=0, t, r;
 
     fseek(arquivo, 0, SEEK_SET);
@@ -69,8 +67,8 @@ void criaIndice (FILE *arquivo, int qtd)
 
     // percorre todo o vetor e insere no arquivo de indice
      for (int i=0;i<qtd;i++){
-        t = ind->ticket;
-        r = ind->rnn;
+        t = indices[i].ticket;
+        r = indices[i].rnn;
 
         printf("a---->%d\n", t);
         fwrite(&t, sizeof(int), 1, indice1);
