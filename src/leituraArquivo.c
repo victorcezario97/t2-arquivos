@@ -6,6 +6,22 @@
 #include <free.h>
 #include <indices.h>
 
+int tamanhoRegistro(FILE *arquivo){
+	int n = 0, t = 0, pos;
+
+	pos = ftell(arquivo);
+	fread(&n, sizeof(int), 1, arquivo);
+	while(n != -1){
+		fseek(arquivo, pos+1, SEEK_SET);
+		t++;
+		pos = ftell(arquivo);
+		fread(&n, sizeof(int), 1, arquivo);
+	}
+
+	//Soma o valor do delimitador
+	return t+4;
+}
+
 //Funcao que le um registro de um arquivo passado
 REGISTRO leRegistro(FILE *arquivo){
 	REGISTRO registro;
@@ -108,11 +124,16 @@ char *leCampoVariavel(FILE *arquivo, int *tamanho)
 ///modo(2): Arquivo com delimitadores entre registros.
 ///modo(3): Arquivo com numero fixo de campos.
 void leEntradaGeraSaida(char *entrada, REGISTRO *registro){
-	int qtdRegistro = 0;
+	int qtdRegistro = 0, n = -1;
 	FILE *arquivoEntrada = fopen(entrada, "r");
 	FILE *arquivo1 = fopen("./saidas/saidaBestFit.bin", "wb+");
 	FILE *arquivo2 = fopen("./saidas/saidaWorstFit.bin", "wb+");
 	FILE *arquivo3 = fopen("./saidas/saidaFirstFit.bin", "wb+");
+
+	//Escreve o topo da lista de registros removidos(-1)
+	fwrite(&n, sizeof(int), 1, arquivo1);
+	fwrite(&n, sizeof(int), 1, arquivo2);
+	fwrite(&n, sizeof(int), 1, arquivo3);
 
 	///---------------LEITURA (POR "REGISTRO)-------------------
 		///Dominio

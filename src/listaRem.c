@@ -13,7 +13,6 @@ int encontraPos(int n, FILE *arquivo){
 
 	//Caso nao tenha nenhum removido, retorna -1
 	if(rrn == -1) return rrn;
-	printf("asdasd\n");
 
 	prox = rrn;
 	//Verifica se o tamanho eh suficiente e cabem os bytes para indicar o registro removido
@@ -174,7 +173,8 @@ void ordenaListaRem(FILE *arquivo, int tipo, int rrn, int tam){
 	int pos;
 
 	fseek(arquivo, 0, SEEK_SET);
-	fread(&pos, sizeof(int), 1, arquivo);
+	//fread(&pos, sizeof(int), 1, arquivo);
+	pos = encontraPos(tam, arquivo);
 
 	//Caso a lista ainda nao tenha remocoes, nao altera nada
 	if(pos == -1) return;
@@ -205,7 +205,7 @@ void ordenaListaRem(FILE *arquivo, int tipo, int rrn, int tam){
 }
 
 void imprimeListaRem(FILE *arquivo){
-	int rrn, tam, prev;
+	int rrn;
 	char c;
 
 	fseek(arquivo, 0, SEEK_SET);

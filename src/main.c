@@ -11,6 +11,7 @@
 #include <insercao.h>
 #include <indices.h>
 #include <listaRem.h>
+#include <remocao.h>
 
 int main()
 {
@@ -45,9 +46,7 @@ int main()
 
     		case 2:
     		//Remover registros
-			arquivo = fopen("./saidas/saidaBestFit.bin", "r");
-    		imprimeArquivoDelimitador(arquivo);
-			fclose(arquivo);
+			remover();
     		break;
 
     		case 3:
@@ -62,6 +61,9 @@ int main()
     		case 4:
     		//Estatisticas indices
     		imprimirIndices();
+    		arquivo = fopen("./saidas/saidaBestFit.bin", "r");
+    		imprimeArquivoDelimitador(arquivo);
+			fclose(arquivo);
 			break;
 
 			case 5:

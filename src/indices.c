@@ -38,7 +38,6 @@ void quick(INDICE *vetor, int inicio, int fim){
 
 void escreveIndice(INDICE *indices, int n, int tipo){
     FILE *arquivo;
-    int a;
 
     switch(tipo){
         case BEST_FIT:
@@ -74,7 +73,6 @@ void criaIndice (FILE *arquivo, int qtd)
     INDICE *indices = (INDICE*)malloc(sizeof(INDICE) * (qtd));
     REGISTRO aux;
     int delim, pos = 0, i, k=0, t, r;
-    char c;
 
     fseek(arquivo, 4, SEEK_SET);
     //c = fgetc(arquivo);
@@ -148,7 +146,7 @@ INDICE *lerIndice(FILE *arquivo, int *n){
     fseek(arquivo, 0, SEEK_SET);
 
     fread(n, sizeof(int), 1, arquivo);
-    printf("----------->%d\n", *n);
+    //printf("----------->%d\n", *n);
     indices = (INDICE*)malloc(sizeof(INDICE)*(*n));
 
     for(int i=0; i < *n; i++){
@@ -224,12 +222,16 @@ int buscaIndice(int x, int n, INDICE *v) {
    return -1;                               
 }
 
-void removeIndice(int ticket, INDICE *indices, int n, int tipo){
-    int pos = buscaIndice(ticket, n indices);
+int removeIndice(int ticket, INDICE *indices, int n, int tipo){
+    int pos = buscaIndice(ticket, n, indices), bo;
     
+    if(pos == -1) return -1;
+    bo = indices[pos].rnn;
     indices[pos] = indices[n-1];
     indices = (INDICE*)realloc(indices, sizeof(INDICE)*(n-1));
     escreveIndice(indices, n-1, tipo);
+
+    return bo;
 }
 
 void insereIndice(int ticket, int bo, INDICE *indices, int n, int tipo){

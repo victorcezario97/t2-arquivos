@@ -42,7 +42,7 @@ int recebeCampo(char **campo, boolean fixo, boolean nulo){
 
 REGISTRO recebeRegistro(){
 	REGISTRO reg;
-	int n = 0;
+	int n = 0, aux;;
 
 	printf("Insira os dados sobre o registro.\nAo fim de cada dado digite ENTER, e caso o dado seja nulo, digite apenas ENTER.\n");
 	printf("DOMINIO: ");
@@ -61,14 +61,18 @@ REGISTRO recebeRegistro(){
 	printf("CIDADE: ");
 	reg.tamanhoCidade = recebeCampo(&reg.cidade, FALSE, TRUE);
 	printf("DATA E HORA DO CADASTRO: ");
-	reg.tamanho = recebeCampo(&reg.dataHoraCadastro, TRUE, TRUE);
+	aux = recebeCampo(&reg.dataHoraCadastro, TRUE, TRUE);
+	if(aux == 0) reg.tamanho = 4;
+	else reg.tamanho = TAMANHO_FIXO;
 	printf("DATA E HORA DA ATUALIZACAO: ");
-	reg.tamanho += recebeCampo(&reg.dataHoraAtualiza, TRUE, TRUE);
+	aux = recebeCampo(&reg.dataHoraAtualiza, TRUE, TRUE);
+	if(aux == 0) reg.tamanho += 4;
+	else reg.tamanho += TAMANHO_FIXO;
 	printf("TICKET: ");
 	scanf("%d", &reg.ticket);
 	printf("\n");
 
-	reg.tamanho += reg.tamanhoDominio + TAMANHO_FIXO + reg.tamanhoNome + reg.tamanhoUF + reg.tamanhoCidade;
+	reg.tamanho += 4 + reg.tamanhoDominio + TAMANHO_FIXO + 4 + reg.tamanhoNome + 4 + reg.tamanhoUF + 4 + reg.tamanhoCidade + 4;
 
 	return reg;
 }
@@ -80,7 +84,7 @@ boolean escreve(REGISTRO reg, FILE *arquivo, INDICE *indices, int n, int tipo){
 	if(bo != -1) return FALSE;
 
 	pos = encontraPos(reg.tamanho, arquivo);
-	//printf("pos: %d\n", pos);
+	printf("pos: %d\n", pos);
 
 	if(pos != -1){
 		fseek(arquivo, pos, SEEK_SET);
@@ -125,7 +129,8 @@ void inserir(){
 	if(!b) printf("Ja existe um registro com o ticket inserido no arquivo.\nA insercao falhou.\n");
 	else{
 		escreve(reg, worst, indicesWorst, nWorst, WORST_FIT);
-		escreve(reg, first, indicesFirst, nFirst, FIRST_FIT);
+		//escreve(reg, first, indicesFirst, nFirst, FIRST_FIT);
+		printf("Registro inserido com sucesso\n");
 	}
 
 	fclose(best);

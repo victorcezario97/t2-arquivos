@@ -120,12 +120,13 @@ void imprimeArquivoFixo(FILE *arquivo){
 
 //Funcao que imprime todos os registros de um arquivo com registros separados por delimitadores.
 //Delimitador = -1(int).
-void ImprimeArquivoDelimitador(FILE *arquivo){
+void imprimeArquivoDelimitador(FILE *arquivo){
 	char c;
 	int ncampos = 0, numero, tamanho, nregistro = 1;
     int i, pos, delimitador = -1;
 
 	fgetc(stdin);	//Descartando o \n digitado da opcao
+	fread(&numero, sizeof(int), 1, arquivo);
 
 	c = fgetc(arquivo);
 
@@ -139,18 +140,19 @@ void ImprimeArquivoDelimitador(FILE *arquivo){
         imprimeNomeCampo(ncampos);
         printf(": ");
 		//O oitavo campo eh um int
-		if(ncampos == 7){
+		if(ncampos == 3){
 			fread(&numero, sizeof(int), 1, arquivo);
 			printf("%d", numero);
 		}else{
 			pos = ftell(arquivo);
 			fread(&tamanho, sizeof(int), 1, arquivo);
+			printf("--------------------->%d\n", tamanho);
 
 			if(tamanho != 0){
 				fseek(arquivo, pos, SEEK_SET);
 				//Lendo o tamanho do campo
 				//Se for de tamanho fixo
-				if(fixo(ncampos))	tamanho = 20;
+				if(ncampos < 4)	tamanho = 20;
 				//Caso contrario, le o tamanho
 				else fread(&tamanho, sizeof(int), 1, arquivo);
 
@@ -185,7 +187,7 @@ void ImprimeArquivoDelimitador(FILE *arquivo){
 }
 
 //Funcao que imprime todos os registros de um arquivo com registros com indicadores de tamanho
-void ImprimeArquivoTamanho(FILE *arquivo){
+void imprimeArquivoTamanho(FILE *arquivo){
 	char c;
 	int ncampos = 0, numero, tamanho, nregistro = 1;
     int i, pos, tamanhoreg, count = 0, indicadorTamanho = 4;
