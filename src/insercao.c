@@ -5,12 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <escritaArquivo.h>
-
-enum{
-	BEST_FIT,
-	WORST_FIT,
-	FIRST_FIT
-};
+#include <indices.h>
+#include <listaRem.h>
 
 int recebeCampo(char **campo, boolean fixo, boolean nulo){
 	int n = 0;
@@ -77,59 +73,62 @@ REGISTRO recebeRegistro(){
 	return reg;
 }
 
-REMOVIDOS *encontraPos(int n, LISTAREM *lista){
-	REMOVIDOS *rem = lista->topo, *prev;
+boolean escreve(REGISTRO reg, FILE *arquivo, INDICE *indices, int n, int tipo){
+	int pos, bo;
 
-	while(rem && n > rem->tamanho){
-		prev = rem;
-		rem = rem->prox;
-	}
+	bo = buscaIndice(reg.ticket, n, indices);
+	if(bo != -1) return FALSE;
 
-	if(rem){
-		prev->prox = rem->prox;
-	}
+	pos = encontraPos(reg.tamanho, arquivo);
+	//printf("pos: %d\n", pos);
 
-	return rem;
-}
-
-void removeIndice(){
-
-}
-
-void insereIndice(){}
-
-void escreve(REGISTRO reg, LISTAREM *lista, FILE *arquivo){
-	REMOVIDOS *rem;
-	int pos, n;
-	char c = '*';
-
-	rem = encontraPos(reg.tamanho, lista);
-	if(rem){
-		fseek(arquivo, rem->rrn, SEEK_SET);
-		gravarArquivoComSeparador(arquivo, &reg);
-		removeIndice(rem->rrn);
-		if(rem->tamanho > reg.tamanho){
-			pos = ftell(arquivo);
-			fwrite(&c, 1, 1, arquivo);
-			n = rem->tamanho - reg.tamanho;
-			fwrite(&n, 4, 1, arquivo);
-			insereIndice(n, pos);
-		}
+	if(pos != -1){
+		fseek(arquivo, pos, SEEK_SET);
 	}else{
 		fseek(arquivo, 0, SEEK_END);
-		gravarArquivoComSeparador(arquivo, &reg);
+		pos = ftell(arquivo);
 	}
+
+	gravarArquivoComSeparador(arquivo, &reg);
+	insereIndice(reg.ticket, pos, indices, n, tipo);
+	ordenaListaRem(arquivo, tipo, pos, reg.tamanho);
+
+	fseek(arquivo, 0, SEEK_SET);
+	fread(&pos, sizeof(int), 1, arquivo);
+	//printf("pos 2: %d\n", pos);
+
+	return TRUE;
 }
 
-void inserir(LISTAREM *lBest, LISTAREM *lWorst, LISTAREM *lFirst){
+void inserir(){
 	REGISTRO reg;
-	FILE *best = fopen("saidas/saidaBestFit.bin", "a");
-	FILE *worst = fopen("saidas/saidaWorstFit.bin", "a");
-	FILE *first = fopen("saidas/saidaFirstFit.bin", "a");	
+	boolean b;
+	FILE *best = fopen("saidas/saidaBestFit.bin", "r+");
+	FILE *worst = fopen("saidas/saidaWorstFit.bin", "r+");
+	FILE *first = fopen("saidas/saidaFirstFit.bin", "r+");
+	FILE *bestIndice = fopen("indices/indiceBestFit.bin", "r+");
+	FILE *worstIndice = fopen("indices/indiceWorstFit.bin", "r+");
+	FILE *firstIndice = fopen("indices/indiceFirstFit.bin", "r+");
+	int nBest, nWorst, nFirst;
+	INDICE *indicesBest = lerIndice(bestIndice, &nBest);
+	INDICE *indicesWorst = lerIndice(worstIndice, &nWorst);
+	INDICE *indicesFirst = lerIndice(firstIndice, &nFirst);
 
+	fclose(bestIndice);
+	fclose(worstIndice);
+	fclose(firstIndice);
+	getchar();
 	reg = recebeRegistro();
+	imprimeRegistro(reg, TODOS);
 
-	escreve(reg, lBest, best);
-	escreve(reg, lWorst, worst);
-	escreve(reg, lFirst, first);
+	b = escreve(reg, best, indicesBest, nBest, BEST_FIT);
+	if(!b) printf("Ja existe um registro com o ticket inserido no arquivo.\nA insercao falhou.\n");
+	else{
+		escreve(reg, worst, indicesWorst, nWorst, WORST_FIT);
+		escreve(reg, first, indicesFirst, nFirst, FIRST_FIT);
+	}
+
+	fclose(best);
+	fclose(worst);
+	fclose(first);
 }
