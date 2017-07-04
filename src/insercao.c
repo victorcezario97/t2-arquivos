@@ -99,7 +99,9 @@ boolean escreve(REGISTRO reg, FILE *arquivo, INDICE *indices, int n, int tipo){
 	if(reordena){
 		fseek(arquivo, end+1, SEEK_SET);
 		fread(&tam, sizeof(int), 1, arquivo);
-		ordenaListaRem(arquivo, tipo, end, reg.tamanho);
+		printf("tam %d\n", tam);
+
+		ordenaListaRem(arquivo, tipo, end, tam);
 	}
 
 	fseek(arquivo, 0, SEEK_SET);

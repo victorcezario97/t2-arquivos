@@ -20,7 +20,7 @@ int main()
 	//REGISTRO *regsBusca;//Ponteiro de registro usado na busca de registros atraves de um campo
 	//CAMPOBUSCA campo;//Struct usada na busca a partir de um campo
 	int opcao = 0;// regNumber = 0;
-	int a;
+	//int a;
 	//char c; FILE *fp;
     while(1){
     	imprimeMenuPrincipal();
@@ -50,10 +50,10 @@ int main()
     		break;
 
     		case 3:
-    		arquivo = fopen("./indices/indiceBestFit.bin", "r");
-    		fread(&a, sizeof(int), 1, arquivo);
-    		printf("%d\n", a);
-			fclose(arquivo);
+    		//arquivo = fopen("./indices/indiceBestFit.bin", "r");
+    		//fread(&a, sizeof(int), 1, arquivo);
+    		//printf("%d\n", a);
+			//fclose(arquivo);
     		inserir();
 
     		break;
@@ -61,9 +61,9 @@ int main()
     		case 4:
     		//Estatisticas indices
     		imprimirIndices();
-    		arquivo = fopen("./saidas/saidaBestFit.bin", "r");
-    		imprimeArquivoDelimitador(arquivo);
-			fclose(arquivo);
+    		//arquivo = fopen("./saidas/saidaBestFit.bin", "r");
+    		//imprimeArquivoDelimitador(arquivo);
+			//fclose(arquivo);
 			break;
 
 			case 5:

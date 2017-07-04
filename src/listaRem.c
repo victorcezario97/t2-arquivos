@@ -25,7 +25,6 @@ void removeLista(int bo, FILE *arquivo){
 	return;
 }
 
-//Dois casos retornam -1
 int encontraPos(int n, FILE *arquivo, boolean op, int *end, boolean *reordena){
 	int rrn, prox, tam = 0;
 
@@ -35,7 +34,7 @@ int encontraPos(int n, FILE *arquivo, boolean op, int *end, boolean *reordena){
 
 	//Le o topo da lista de registros removidos
 	fread(&rrn, sizeof(int), 1, arquivo);	
-	//printf("rrn %d\n", rrn);
+	//printf("rrn %d\n", n);
 
 	//Caso nao tenha nenhum removido, retorna -1
 	if(rrn == -1) return rrn;
@@ -213,7 +212,11 @@ void ordenaListaRem(FILE *arquivo, int tipo, int rrn, int tam){
 	//fread(&c, sizeof(char), 1, arquivo);
 	//printf("%c\n", c);
 	//Caso a lista ainda nao tenha remocoes, nao altera nada
-	if(pos == -1) return;
+	if(pos == -1){
+		rewind(arquivo);
+		fwrite(&rrn, sizeof(int), 1, arquivo);
+		return;
+	}
 	//Caso o registro recebido seja o ultimo
 	if(pos == -2){
 		fseek(arquivo, 0, SEEK_SET);
