@@ -205,26 +205,25 @@ void ordenaListaRem(FILE *arquivo, int tipo, int rrn, int tam){
 }
 
 void imprimeListaRem(FILE *arquivo){
-	int rrn;
-	char c;
+	int rrn, prev, tam;
 
 	fseek(arquivo, 0, SEEK_SET);
 	fread(&rrn, sizeof(int), 1, arquivo);
 	printf("TOPO DA LISTA: %d\n", rrn);
 
-	fseek(arquivo, rrn, SEEK_SET);
-	c = fgetc(arquivo);
-	printf("%c\n", c);
+	//fseek(arquivo, rrn, SEEK_SET);
+	//c = fgetc(arquivo);
+	//printf("%c\n", c);
 
 
-	/*while(rrn != -1){
+	while(rrn != -1){
 		prev = rrn;
 		fseek(arquivo, rrn+1, SEEK_SET);
 		fread(&tam, sizeof(int), 1, arquivo);
 		fread(&rrn, sizeof(int), 1, arquivo);
 
 		printf("TAMANHO: %d RRN: %d -----> ", tam, prev);
-	}*/
+	}
 
 	printf("FIM DA LISTA\n\n");
 
