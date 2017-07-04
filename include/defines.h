@@ -11,6 +11,12 @@
 #define MAX2(m, n) m > n ? m : n
 #define MAX3(m, n, p) MAX2(m, n) > p ? MAX2(m, n) : p
 
+enum{
+	BEST_FIT,
+	WORST_FIT,
+	FIRST_FIT
+};
+
 //Ordem dos campos
 enum{
 	DOMINIO,

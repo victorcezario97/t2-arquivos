@@ -6,7 +6,7 @@
 void imprimeNomeCampo(int n);
 void imprimeRegistro(REGISTRO registro, int quais);
 void imprimeArquivoFixo(FILE *arquivo);
-void ImprimeArquivoDelimitador(FILE *arquivo);
-void ImprimeArquivoTamanho(FILE *arquivo);
+void imprimeArquivoDelimitador(FILE *arquivo);
+void imprimeArquivoTamanho(FILE *arquivo);
 
 #endif

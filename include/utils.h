@@ -2,8 +2,8 @@
 #define _UTILS_H_
 
 typedef enum{
-	TRUE,
-	FALSE
+	FALSE,
+	TRUE
 } boolean;
 
 char *leString();
