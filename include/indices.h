@@ -6,7 +6,7 @@
 void criaIndice (FILE *arquivo, int qtd);
 INDICE *lerIndice(FILE *fp, int *n);
 void imprimirIndices();
-void removeIndice();
+void removeIndice(int ticket, INDICE *indices, int n, int tipo);
 void insereIndice(int ticket, int bo, INDICE *indices, int n, int tipo);
 int buscaIndice(int x, int n, INDICE *v);
 
