@@ -7,7 +7,7 @@ FILE *indice1 = fopen("indices/indiceBestFit.bin", "w+");
 FILE *indice2 = fopen("indices/indiceWorstFit.bin", "w+");
 FILE *indice3 = fopen("indices/indiceFirstFit.bin", "w+");
 
-int buscaBinaria (int x, int n, INDICE v[]) {
+int buscaremocao (int x, int n, INDICE v[]) {
    int e, m, d;                              
    e = 0; d = n-1;                          
    while (e <= d) {                         
