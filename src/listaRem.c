@@ -1,18 +1,46 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <defines.h>
+#include <utils.h>
+
+void removeLista(int bo, FILE *arquivo){
+	int pos, prev = 0, prox;
+
+	rewind(arquivo);
+	fread(&pos, sizeof(int), 1, arquivo);
+	fseek(arquivo, pos+5, SEEK_SET);
+	fread(&prox, sizeof(int), 1, arquivo);
+
+	if(pos == -1) return;
+	while(pos != bo){
+		prev = pos;
+		pos = prox;
+		fseek(arquivo, prox+5, SEEK_SET);
+		fread(&prox, sizeof(int), 1, arquivo);
+	}
+	if(prev != 0) prev += 5;
+	fseek(arquivo, prev, SEEK_SET);
+	fwrite(&prox, sizeof(int), 1, arquivo);
+
+	return;
+}
 
 //Dois casos retornam -1
-int encontraPos(int n, FILE *arquivo){
+int encontraPos(int n, FILE *arquivo, boolean op, int *end, boolean *reordena){
 	int rrn, prox, tam = 0;
+
+	*reordena = FALSE;
 
 	fseek(arquivo, 0, SEEK_SET);
 
 	//Le o topo da lista de registros removidos
 	fread(&rrn, sizeof(int), 1, arquivo);	
+	//printf("rrn %d\n", rrn);
 
 	//Caso nao tenha nenhum removido, retorna -1
 	if(rrn == -1) return rrn;
+
+	//fread(&tamanho, sizeof(int), 1, arquivo);
 
 	prox = rrn;
 	//Verifica se o tamanho eh suficiente e cabem os bytes para indicar o registro removido
@@ -29,14 +57,19 @@ int encontraPos(int n, FILE *arquivo){
 		fread(&prox, sizeof(int), 1, arquivo);
 	}
 
-	if(tam > n){
+	//printf("--->%c %d\n",c, tam );
+
+	if(op && tam > n){
+		*reordena = TRUE;
+		*end = rrn;
 		tam = tam - n;
 		fseek(arquivo, rrn+1, SEEK_SET);
 		fwrite(&tam, sizeof(int), 1, arquivo);
 		fwrite(&prox, sizeof(int), 1, arquivo);
+		removeLista(rrn, arquivo);
 	}
-
-	return rrn + (tam - n);
+	//printf("rrn:%d tam: %d n:%d\n", rrn, tam, n);
+	return rrn + tam;
 }
 
 void ordenaBest(FILE *arquivo, int rrn, int tam, int pos){
@@ -171,11 +204,14 @@ void ordenaFirst(FILE *arquivo, int rrn, int pos){
 
 void ordenaListaRem(FILE *arquivo, int tipo, int rrn, int tam){
 	int pos;
-
 	fseek(arquivo, 0, SEEK_SET);
-	//fread(&pos, sizeof(int), 1, arquivo);
-	pos = encontraPos(tam, arquivo);
+	fread(&pos, sizeof(int), 1, arquivo);
+	//pos = encontraPos(tam, arquivo, FALSE);
+	//printf("---->>%d %d\n", rrn, tam);
 
+	//fseek(arquivo, pos, SEEK_SET);
+	//fread(&c, sizeof(char), 1, arquivo);
+	//printf("%c\n", c);
 	//Caso a lista ainda nao tenha remocoes, nao altera nada
 	if(pos == -1) return;
 	//Caso o registro recebido seja o ultimo

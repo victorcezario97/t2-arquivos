@@ -20,7 +20,7 @@ int leOp(){
         {
             printf ("Opcao: ");
             scanf("%d", &opcao);
-            //printf("%d\n", opcao);
+            printf("%d\n", opcao);
 
             if(opcao > 6 || opcao < 1)
             {

@@ -16,7 +16,7 @@
 int main()
 {
 	FILE *arquivo; 
-	REGISTRO *registro;///registro que ser√° usado para armazenar os dados durante a grava√ß√£o dos dados e escrita do arquivoSaida.
+	REGISTRO *registro;///registro que ser· usado para armazenar os dados durante a gravaÁ„o dos dados e escrita do arquivoSaida.
 	//REGISTRO *regsBusca;//Ponteiro de registro usado na busca de registros atraves de um campo
 	//CAMPOBUSCA campo;//Struct usada na busca a partir de um campo
 	int opcao = 0;// regNumber = 0;
@@ -37,7 +37,7 @@ int main()
     		case 1:
     		registro = (REGISTRO*)malloc(sizeof(REGISTRO));
     		//Gera o arquivo de saida
-    		leEntradaGeraSaida(ENTRADA, registro);///fun√ß√£o que l√™ o arquivo de entrada e gera o arquivo saida dependendo da decis√£o do usu√°rio.
+    		leEntradaGeraSaida(ENTRADA, registro);///funÁ„o que lÍ o arquivo de entrada e gera o arquivo saida dependendo da decis„o do usu·rio.
     		//Libera a memoria usada
     		/*libera_campos(registro);
     		free(registro);
@@ -52,7 +52,7 @@ int main()
     		case 3:
     		arquivo = fopen("./indices/indiceBestFit.bin", "r");
     		fread(&a, sizeof(int), 1, arquivo);
-    		//printf("%d\n", a);
+    		printf("%d\n", a);
 			fclose(arquivo);
     		inserir();
 

@@ -38,7 +38,7 @@ void quick(INDICE *vetor, int inicio, int fim){
 
 void escreveIndice(INDICE *indices, int n, int tipo){
     FILE *arquivo;
-    int i;
+
     switch(tipo){
         case BEST_FIT:
         arquivo = fopen("indices/indiceBestFit.bin", "r+");
@@ -57,7 +57,7 @@ void escreveIndice(INDICE *indices, int n, int tipo){
 
     quick(indices, 0, n-1);
 
-    for(i=0; i<n; i++){
+    for(int i=0; i<n; i++){
         fwrite(&(indices[i].ticket), sizeof(int), 1, arquivo);
         fwrite(&(indices[i].rnn), sizeof(int), 1, arquivo);
     }
@@ -141,15 +141,15 @@ void criaIndice (FILE *arquivo, int qtd)
 
 INDICE *lerIndice(FILE *arquivo, int *n){
     INDICE *indices;
-    int a,i;
-    
+    int a;
+
     fseek(arquivo, 0, SEEK_SET);
 
     fread(n, sizeof(int), 1, arquivo);
     //printf("----------->%d\n", *n);
     indices = (INDICE*)malloc(sizeof(INDICE)*(*n));
 
-    for(i=0; i < *n; i++){
+    for(int i=0; i < *n; i++){
         fread(&a, sizeof(int), 1, arquivo);
         indices[i].ticket = a;
         fread(&indices[i].rnn, sizeof(int), 1, arquivo);
@@ -167,8 +167,7 @@ void imprimirIndices(){
     INDICE *ind2 = lerIndice(indice2, &n2);
     INDICE *ind3 = lerIndice(indice3, &n3);
     int max = MAX3(n1, n2, n3);
-    int i;
-    //printf("%d\n", n1);
+    printf("%d\n", n1);
     //return;
     boolean todos = FALSE;
     char c;
@@ -176,7 +175,7 @@ void imprimirIndices(){
     getchar();
     printf("Impressao dos indices.\nPressione ENTER para imprimir o proximo ou ESPACO seguido de ENTER para imprimir o restante.\n");
     printf("INDICE BEST FIT(%d) \tINDICE WORST FIT(%d)\tINDICE FIRST FIT(%d)\n", n1, n2, n3);
-    for(i=0; i< max; i++){
+    for(int i=0; i< max; i++){
         printf("Indice %d:\n", i);
         printf("--------------------------------------------------------------------\n");
         if(n1 > i) printf("TICKET: %8d\t", ind1[i].ticket);

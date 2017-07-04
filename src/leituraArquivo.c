@@ -8,11 +8,14 @@
 
 int tamanhoRegistro(FILE *arquivo){
 	int n = 0, t = 0, pos;
+	//char c;
 
 	pos = ftell(arquivo);
 	fread(&n, sizeof(int), 1, arquivo);
 	while(n != -1){
 		fseek(arquivo, pos+1, SEEK_SET);
+		//c = fgetc(arquivo);
+		//printf("%d: %c\n", t, c);
 		t++;
 		pos = ftell(arquivo);
 		fread(&n, sizeof(int), 1, arquivo);

@@ -78,13 +78,14 @@ REGISTRO recebeRegistro(){
 }
 
 boolean escreve(REGISTRO reg, FILE *arquivo, INDICE *indices, int n, int tipo){
-	int pos, bo;
+	int pos, bo, end, tam;
+	boolean reordena;
 
 	bo = buscaIndice(reg.ticket, n, indices);
 	if(bo != -1) return FALSE;
 
-	pos = encontraPos(reg.tamanho, arquivo);
-	printf("pos: %d\n", pos);
+	pos = encontraPos(reg.tamanho, arquivo, TRUE, &end, &reordena);
+	//printf("pos: %d\n", pos);
 
 	if(pos != -1){
 		fseek(arquivo, pos, SEEK_SET);
@@ -95,7 +96,11 @@ boolean escreve(REGISTRO reg, FILE *arquivo, INDICE *indices, int n, int tipo){
 
 	gravarArquivoComSeparador(arquivo, &reg);
 	insereIndice(reg.ticket, pos, indices, n, tipo);
-	ordenaListaRem(arquivo, tipo, pos, reg.tamanho);
+	if(reordena){
+		fseek(arquivo, end+1, SEEK_SET);
+		fread(&tam, sizeof(int), 1, arquivo);
+		ordenaListaRem(arquivo, tipo, end, reg.tamanho);
+	}
 
 	fseek(arquivo, 0, SEEK_SET);
 	fread(&pos, sizeof(int), 1, arquivo);
@@ -126,14 +131,15 @@ void inserir(){
 	imprimeRegistro(reg, TODOS);
 
 	b = escreve(reg, best, indicesBest, nBest, BEST_FIT);
+	fclose(best);
 	if(!b) printf("Ja existe um registro com o ticket inserido no arquivo.\nA insercao falhou.\n");
 	else{
 		escreve(reg, worst, indicesWorst, nWorst, WORST_FIT);
-		//escreve(reg, first, indicesFirst, nFirst, FIRST_FIT);
+		escreve(reg, first, indicesFirst, nFirst, FIRST_FIT);
 		printf("Registro inserido com sucesso\n");
 	}
 
-	fclose(best);
+	
 	fclose(worst);
 	fclose(first);
 }

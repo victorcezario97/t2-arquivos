@@ -77,5 +77,6 @@ void remover(){
 	}else{
 		apaga(ticket, worst, worstIndice, WORST_FIT);
 		apaga(ticket, first, firstIndice, FIRST_FIT);
+		printf("Remocao executada com sucesso.\n");
 	}
 }
