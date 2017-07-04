@@ -168,7 +168,7 @@ void imprimirIndices(){
     INDICE *ind3 = lerIndice(indice3, &n3);
     int max = MAX3(n1, n2, n3);
     int i;
-    printf("%d\n", n1);
+    //printf("%d\n", n1);
     //return;
     boolean todos = FALSE;
     char c;
