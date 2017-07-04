@@ -30,7 +30,7 @@ boolean apaga(int ticket, FILE *arquivo, FILE *arquivoIndice, int tipo){
 	//Escreve o byte que indica que o registro foi removido
 	fwrite(&c, sizeof(char), 1, arquivo);
 	//Escreve o tamanho do espaco "vazio"
-	fwrite(&tamanho, sizeof(char), 1, arquivo);
+	fwrite(&tamanho, sizeof(int), 1, arquivo);
 
 
 	rewind(arquivo);
